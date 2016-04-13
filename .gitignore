@@ -10,6 +10,15 @@
 *.dll
 *.dylib
 
+# CMake
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+CMakeLists.txt.user
+
 # Qt-es
 
 /.qmake.cache
