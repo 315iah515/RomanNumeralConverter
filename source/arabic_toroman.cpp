@@ -146,40 +146,44 @@ ArabicConverter::ConvertToRoman(unsigned int Value)
 //      ConvertToAarabic()
 //
 //  Summary:
-//
+//      Converts a set of Roman Numerals to Arabic numbers
 //
 //
 //  Parameters:
-//      Value -
-//          [in]
+//      RomanNumerial -
+//          [in] Immutable string to be converted
 //
 //  Returns:
-//
+//      A value of -1 is returned if the input string fails validation (not a Roman Numeral)
+//      or the proper Arabic representation of the Roman Numeral.
 //
 //  Remarks:
-//
+//     Regular expression matching is performed to ensue that the input string is entirely
+//     comprised of Roman Numerals.
 //
 //----------------------------------------------------------------------------------------
 //
-unsigned int
+int
 ArabicConverter::ConvertToAarabic(std::string const& RomanNumerial)
 {
-    unsigned int Result = 0;
+    int Result = -1;
 
     if (std::regex_match(RomanNumerial,sRomanNum ))
     {
         std::string InputStr(RomanNumerial);
+        Result = 0;
 
 
         for (std::size_t i = 0; i < sRomanLetters.size() && !InputStr.empty(); ++i)
         {
+
             if (i % 2 == 1)
             {
                 std::string vMatchStr(InputStr.substr(0, 2));
 
                 if (vMatchStr == sRomanLetters[i].first)
                 {
-                    Result =+ sRomanLetters[i].second;
+                    Result += sRomanLetters[i].second;
                     InputStr.erase(0, 2);
                 }
            }
@@ -199,7 +203,7 @@ ArabicConverter::ConvertToAarabic(std::string const& RomanNumerial)
 
                     if (vMatchStr == sRomanLetters[i].first)
                     {
-                        Result =+ sRomanLetters[i].second;
+                        Result += sRomanLetters[i].second;
                         InputStr.erase(0, 1);
                     }
                 }
@@ -247,8 +251,16 @@ ArabicConverter::BuildMap()
 //      HandleSpecialRepeating()
 //
 //  Summary:
+//      Handles those special roman characters that are allowed to repeat.
 //
+//  Parameters:
+//      vStr -
+//          [in, out] mutable string to be converted, parsed characters are stripped
+//      vRomanLetter -
+//          [in] Roman Letter to be converted
 //
+//  Returns:
+//      The sum of numeric representation of one or more the repeatable roman numerals
 //
 //----------------------------------------------------------------------------------------
 //
